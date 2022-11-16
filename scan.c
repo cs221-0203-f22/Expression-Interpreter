@@ -17,13 +17,15 @@ struct scan_token_st *scan_table_new_token(struct scan_table_st *tt) {
     struct scan_token_st *tp = calloc(1, sizeof(struct scan_token_st));
     if (!tt->head) {
         tt->head = tp;
-    } else {
+    }
+    else {
         struct scan_token_st *walk = tt->head;
         while (1) {
             if (!walk->next) {
                 walk->next = tp;
                 break;
-            } else {
+            }
+            else {
                 walk = walk->next;
             }
         }
@@ -79,37 +81,51 @@ char * scan_integer(char *p, char *end, struct scan_token_st *tp) {
 char * scan_token(char *p, char *end, struct scan_token_st *tp) {
     if (p == end) {
         p = scan_read_token(tp, p, 0, TK_EOT);
-    } else if (scan_is_whitespace(*p)) {
+    }
+    else if (scan_is_whitespace(*p)) {
         p = scan_whitespace(p, end);
         p = scan_token(p, end, tp);
-    } else if (scan_is_digit(*p)) {
+    }
+    else if (scan_is_digit(*p)) {
         p = scan_integer(p, end, tp);
-    } else if (*p == '+') {
+    }
+    else if (*p == '+') {
         p = scan_read_token(tp, p, 1, TK_PLUS);
-    } else if (*p == '-') {
+    }
+    else if (*p == '-') {
         p = scan_read_token(tp, p, 1, TK_MINUS);
-    } else if (*p == '*') {
+    }
+    else if (*p == '*') {
         p = scan_read_token(tp, p, 1, TK_MULT);
-    } else if (*p == '/') {
+    } 
+    else if (*p == '/') {
         p = scan_read_token(tp, p, 1, TK_DIV);                        
-    } else if (*p == '(') {
+    }
+    else if (*p == '(') {
         p = scan_read_token(tp, p, 1, TK_LPAREN);
-    } else if (*p == ')') {
+    }
+    else if (*p == ')') {
         p = scan_read_token(tp, p, 1, TK_RPAREN);
-	} else if(*p == '~') {
+	} 
+	else if(*p == '~') {
       	p = scan_read_token(tp, p, 1, TK_NOT);
-    } else if (*p == '&') {
+    }
+    else if (*p == '&') {
     	p = scan_read_token(tp, p, 1, TK_AND);
-    } else if (*p == '|') {
+    }
+    else if (*p == '|') {
     	p = scan_read_token(tp, p, 1, TK_OR);
-    } else if (*p == '^') {
+    } 
+    else if (*p == '^') {
     	p = scan_read_token(tp, p, 1, TK_XOR);
-    } else if (!strncmp(p,">>",2)) {
+    } 
+    else if (!strncmp(p,">>",2)) {
         p = scan_read_token(tp, p, 2, TK_RSHIFT);
-    } else if (!strncmp(p,"<<",2)) {
+    } 
+    else if (!strncmp(p,"<<",2)) {
         p = scan_read_token(tp, p, 2, TK_LSHIFT);
     }
-     else {
+    else {
         scan_error("Invalid character");
     }
 

@@ -188,7 +188,44 @@ struct parse_node_st *parse_operand(struct scan_table_st *scan_table) {
         node = parse_node_new();
         node->type = EX_INTVAL;
         node->intval.value = atoi(token->name);
-    } else {
+        }
+
+   else  if (scan_table_accept(scan_table, TK_BINLIT)) {
+        token = scan_table_get(scan_table, -1);
+        node = parse_node_new();
+        node->type = EX_INTVAL;
+        node->intval.value = atoi(token->name);
+        }
+    else if (scan_table_accept(scan_table, TK_HEXLIT)) {
+        token = scan_table_get(scan_table, -1);
+        node = parse_node_new();
+        node->type = EX_INTVAL;
+        node->intval.value = atoi(token->name);
+        }
+        
+   else if (scan_table_accept(scan_table, TK_MINUS)) {
+        token = scan_table_get(scan_table, -1);
+        node = parse_node_new();
+        node->oper1.oper = OP_MINUS;
+        node->oper1.operand = parse_operand(scan_table);
+        }
+
+    else if (scan_table_accept(scan_table, TK_NOT)) {
+        token = scan_table_get(scan_table, -1);
+        node = parse_node_new();
+        node->oper1.oper = OP_NOT;
+        node->oper1.operand = parse_operand(scan_table);
+        }
+
+    else if (scan_table_accept(scan_table, TK_LPAREN)) {
+    	token = scan_table_get(scan_table, -1);
+    	node = parse_expression(scan_table);
+    	node->type = EX_OPER2;
+    	scan_table_accept(scan_table, TK_RPAREN);
+    
+    }
+
+     else {
         parse_error("Bad operand");
     }
 
