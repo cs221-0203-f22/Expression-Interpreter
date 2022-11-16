@@ -16,7 +16,8 @@ int main(int argc, char **argv) {
     }
 
     if(strncmp(argv[1], "-e", SCAN_TOKEN_LEN) == 0) {
-    	//TODO handle -e
+
+    	
     }
 
     strncpy(input, argv[2], SCAN_INPUT_LEN);
@@ -27,9 +28,24 @@ int main(int argc, char **argv) {
 
     parse_table_init(&parse_table);
     parse_tree = parse_program(&scan_table);
-    parse_tree_print(parse_tree);
 
-    // eval_tree(parse_node_st *parse_tree);
+	int evalOutput = eval_tree(parse_tree);
+
+	// for(int i = 1; i <= argc; i++) {
+		// if (!strncmp(argv[i],"-b",-2)) {
+			// int base = atoi(argv[i+1]);
+			// i++;
+		// } else if (!strncmp(argv[i],"-e",2)) {
+			// char *expr = argv[i + 1];
+			// i++;
+			// }
+		// }
+
+	// while(evalOutput > 0) {
+		// //TODO while evalOutput > 0
+	// }
+	
+	printf("%d\n", evalOutput);
         
     return 0;
 }

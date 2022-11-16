@@ -18,7 +18,7 @@ void parse_error(char *err) {
 }
 
 // These are names of operators for printing
-char *parse_oper_strings[] = {"PLUS", "MINUS", "MULT", "DIV"};
+char *parse_oper_strings[] = {"PLUS", "MINUS", "MULT", "DIV", "RSHIFT", "LSHIFT", "AND", "OR", "XOR"};
 
 // Print the dots which represent tree depth in the output
 void parse_tree_print_indent(int level) {
