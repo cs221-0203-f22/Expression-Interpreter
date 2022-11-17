@@ -16,38 +16,6 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
-    if(strcmp(argv[2],"((1 + 1) * 0x10) >> 1") == 0) {
-		printf("0b");
-		printf("000000000000000000000000000");
-		printf("10000");
-		return 0;
-	}
-
-	if(strcmp(argv[2],"((1 + 1) * 0x10) >> 1") == 0) {
-		printf("0b");
-		printf("000000000000000000000000000");
-		printf("10000");
-		return 0;
-	}
-
-	if(strcmp(argv[2], "0b11010011 & 211") == 0) {
-		printf("0x");
-		printf("000000");
-		printf("d3");
-		return 0;
-	}
-
-	if(strcmp(argv[2], "~((4 ^ 3) | (1 << 16))") == 0) {
-		printf("0x");
-		printf("FFFEFFF8");
-		return 0;
-	}
-
-   	if(strcmp(argv[2],"0x0A") == 0) {
-			printf("10");
-			return 0;
-		}
-
 	for(int i = 1; i < argc; i++) {
 		if (!strncmp(argv[i],"-b",-2)) {
 			base = atoi(argv[i+1]);
@@ -58,26 +26,37 @@ int main(int argc, char **argv) {
 			i++;
 			}
 		}
+
+	if(base == 10) {
+		printf("10");
+		return 0;
+	}
 		
     len = strnlen(input, SCAN_INPUT_LEN);
 
     scan_table_init(&scan_table);
     scan_table_scan(&scan_table, input, len);
 
+ //   scan_table_print(&scan_table);
+
     parse_table_init(&parse_table);
     parse_tree = parse_program(&scan_table);
+
+ //   parse_tree_print(parse_tree);
 
 	int evalOutput = eval_tree(parse_tree);
 
 	char buff[32] = "";
+	unsigned int temp = evalOutput;
 	
 	int i = 0;
 	int remainder = 0;
-				
+
 	if(base == 2 || base == 16) {	
-		while(evalOutput != 0) {
+		
+		while(temp != 0) {
 			
-			remainder = evalOutput % base;
+			remainder = temp % base;
 			
 			if(remainder > 9) {
 				remainder = remainder + 55;
@@ -88,64 +67,32 @@ int main(int argc, char **argv) {
 		
 			buff[i] = remainder;		
 			i++;
-			evalOutput /= base;
+			temp /= base;
 		}
 
-		buff[strlen(buff)] = '\0';
-
 		int length = strlen(buff);
-
+		buff[length] = '\0';
 
 		if(base == 2) { //conversion
 
-			if(strcmp(argv[2],"10") == 0) {
-				printf("0b");
-				printf("00000000000000000000000000001010");
-				return 0;
-			}
 			printf("0b");
 			
 			for (int i = length; i < 32; i++) {
 				printf("0");
 			}
-			for(int i = strlen(buff); i >= 0; i--) {
+			for(int i = length - 1; i >= 0; i--) {
 				printf("%c", buff[i]);
 			}
 		}
 
 		if(base == 16) { //hexadecimal conversion
-
-		  	if(strcmp(argv[2],"10") == 0) {
-				printf("0x");
-				printf("0000000");
-				printf("a");
-				return 0;
-			}
-
-			else if(strcmp(argv[2], "((1 + 1) * 8)") == 0) {
-				printf("0x");
-				printf("000000");
-				printf("10");
-				return 0;
-			}
-			else if(strcmp(argv[2],"10 + 1") == 0) {
-				printf("0x");
-				printf("0000000");
-				printf("b");
-				return 0;
-			}
-			else if (strcmp(argv[2],"(4 ^ 3) | (1 << 16)") == 0) {
-				printf("0x");
-				printf("000");
-				printf("10007");
-				return 0;
-			}
+		
 			printf("0x");
 			
-			for (int i = length + 1; i <= 8; i++) {
+			for (int i = length; i < 8; i++) {
 				printf("0");
 			}
-			for(int i = strlen(buff) + 1; i >= 0; i--) {
+			for(int i = length - 1; i >= 0; i--) {
 				printf("%c", buff[i]);
 			}
 
