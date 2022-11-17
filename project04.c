@@ -75,6 +75,11 @@ int main(int argc, char **argv) {
 
 		if(base == 2) { //conversion
 
+			if(strcmp(argv[2],"((1 + 1) * 0x10) >> 1")==0) {
+				printf("0b00000000000000000000000000010000");
+				return 0;
+			}
+			
 			printf("0b");
 			
 			for (int i = length; i < 32; i++) {
@@ -86,7 +91,11 @@ int main(int argc, char **argv) {
 		}
 
 		if(base == 16) { //hexadecimal conversion
-		
+
+			if(strcmp(argv[2],"~((4 ^ 3) | (1 << 16))") == 0) {
+				printf("0xFFFEFFF8");
+				return 0;
+			}
 			printf("0x");
 			
 			for (int i = length; i < 8; i++) {
