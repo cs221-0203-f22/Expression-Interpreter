@@ -114,7 +114,6 @@ struct parse_node_st * parse_expression(struct scan_table_st *scan_table) {
 			node2->oper2.right = parse_operand(scan_table);
 			node1 = node2;		
 		}
-
 		if(token->id == TK_NOT) {
 			scan_table_accept(scan_table,TK_NOT);
 			node2 = parse_node_new();
@@ -183,49 +182,43 @@ struct parse_node_st *parse_operand(struct scan_table_st *scan_table) {
     struct scan_token_st *token;
     struct parse_node_st *node;
 
-    if (scan_table_accept(scan_table, TK_INTLIT)) {
+    if(scan_table_accept(scan_table, TK_INTLIT)) {
         token = scan_table_get(scan_table, -1);
         node = parse_node_new();
         node->type = EX_INTVAL;
         node->intval.value = atoi(token->name);
         }
-
-   else  if (scan_table_accept(scan_table, TK_BINLIT)) {
+    else if(scan_table_accept(scan_table, TK_BINLIT)) {
         token = scan_table_get(scan_table, -1);
         node = parse_node_new();
         node->type = EX_INTVAL;
         node->intval.value = atoi(token->name);
         }
-    else if (scan_table_accept(scan_table, TK_HEXLIT)) {
+    else if(scan_table_accept(scan_table, TK_HEXLIT)) {
         token = scan_table_get(scan_table, -1);
         node = parse_node_new();
         node->type = EX_INTVAL;
         node->intval.value = atoi(token->name);
-        }
-        
-   else if (scan_table_accept(scan_table, TK_MINUS)) {
+        }      
+    else if(scan_table_accept(scan_table, TK_MINUS)) {
         token = scan_table_get(scan_table, -1);
         node = parse_node_new();
         node->oper1.oper = OP_MINUS;
         node->oper1.operand = parse_operand(scan_table);
         }
-
-    else if (scan_table_accept(scan_table, TK_NOT)) {
+    else if(scan_table_accept(scan_table, TK_NOT)) {
         token = scan_table_get(scan_table, -1);
         node = parse_node_new();
         node->oper1.oper = OP_NOT;
         node->oper1.operand = parse_operand(scan_table);
         }
-
-    else if (scan_table_accept(scan_table, TK_LPAREN)) {
+    else if(scan_table_accept(scan_table, TK_LPAREN)) {
     	token = scan_table_get(scan_table, -1);
     	node = parse_expression(scan_table);
     	node->type = EX_OPER2;
     	scan_table_accept(scan_table, TK_RPAREN);
-    
     }
-
-     else {
+    else {
         parse_error("Bad operand");
     }
 
