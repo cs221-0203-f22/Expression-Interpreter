@@ -36,13 +36,12 @@ void parse_tree_print_expr(struct parse_node_st *node, int level) {
     if (node->type == EX_INTVAL) {
         printf("INTVAL %d\n", node->intval.value);
     }
-
-	else if(node->type == EX_OPER1) {
+    else if(node->type == EX_OPER1) {
 		printf("OPER1 %s\n", parse_oper_strings[node->oper1.oper]);
 		parse_tree_print_expr(node->oper2.left, level + 1);
 		parse_tree_print_expr(node->oper2.right, level + 1);
 	}
-     else if (node->type == EX_OPER2) {
+	else if (node->type == EX_OPER2) {
         printf("OPER2 %s\n", parse_oper_strings[node->oper2.oper]);
         parse_tree_print_expr(node->oper2.left, level + 1);
         parse_tree_print_expr(node->oper2.right, level + 1);
@@ -87,7 +86,7 @@ struct parse_node_st * parse_expression(struct scan_table_st *scan_table) {
             node2->oper2.right = parse_operand(scan_table);
             node1 = node2;
         }
-		if (token->id == TK_MINUS) {
+        if (token->id == TK_MINUS) {
 			scan_table_accept(scan_table, TK_ANY);
 			node2 = parse_node_new();
 			node2->type = EX_OPER2;
